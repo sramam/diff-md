@@ -3,11 +3,6 @@
 
 ```diff
 
-*** schema-2-anno-gql.prisma	2021-11-13 12:19:05.000000000 -0800
---- schema-3-anno-seeder.prisma	2021-11-13 12:19:05.000000000 -0800
-***************
-*** 1,49 ****
---- 1,55 ----
   datasource db {
     provider = "sqlite"
     url      = "file:./dev.db"
