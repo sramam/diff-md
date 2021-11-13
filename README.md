@@ -9,7 +9,6 @@ These annotations can be applied to the Prisma models and/or individual fields.
 
 A prisma model 
 
-```
 diff --git a/schema-1-nv-generator.prisma b/schema-2-anno-gql.prisma
 index 7f950b3..3f6f76c 100644
 --- a/schema-1-nv-generator.prisma
@@ -64,4 +63,4 @@ model Post {
   User    User?  @relation(fields: [userId], references: [id])
   userId  Int?
 }
-```
+
