@@ -10,64 +10,58 @@ These annotations can be applied to the Prisma models and/or individual fields.
 A prisma model 
 
 ```
-*** schema-2-anno-gql.prisma	2021-11-13 12:19:05.000000000 -0800
---- schema-3-anno-seeder.prisma	2021-11-13 12:19:05.000000000 -0800
-***************
-*** 1,49 ****
---- 1,55 ----
-  datasource db {
-    provider = "sqlite"
-    url      = "file:./dev.db"
-  }
+diff --git a/schema-1-nv-generator.prisma b/schema-2-anno-gql.prisma
+index 7f950b3..3f6f76c 100644
+--- a/schema-1-nv-generator.prisma
++++ b/schema-2-anno-gql.prisma
+@@ -1,43 +1,49 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator noun_and_verb {
+  provider = "noun_and_verb"
+}
+
+model User {
+  {+/// @createOnly+}
+{+  /// @readOnly+}
+  id       Int    @id @default(autoincrement())
   
-  generator client {
-    provider = "prisma-client-js"
-  }
+  /// Email address of the user
+  {+/// @scalar Email+}
+  email    String
   
-  generator noun_and_verb {
-    provider = "noun_and_verb"
-  }
+  /// password. Ideally, not readable via the API
+  {+/// @writeOnly+}
+  password String
+
+  // relations (NOTE: double slashes are local comments and NOT parsed)
+  posts    Post[]
+}
+
+model Post {
+  {+/// @createOnly+}
+{+  /// @readOnly+}
+  id      Int    @id @default(autoincrement())
   
-+ /// @seed 0,100,email
-  model User {
-    /// @createOnly
-    /// @readOnly
-    id       Int    @id @default(autoincrement())
-    
-    /// Email address of the user
-    /// @scalar Email
-    email    String
-    
-    /// password. Ideally, not readable via the API
-    /// @writeOnly
-+   /// @mock faker.internet.password
-    password String
+  /// Title of the post. Keep is short and click-worthy
+  title   String
+
+  /// Slug used in URI for the article. Allows modification of title post-publishing of article.
+  /// While the slug value can be changes, caution advised. Modifications *might* have negative SEO impacts.
+  slug    String
   
-    // relations (NOTE: double slashes are local comments and NOT parsed)
-+   /// @seed 2,10
-    posts    Post[]
-  }
-  
-  model Post {
-    /// @createOnly
-    /// @readOnly
-    id      Int    @id @default(autoincrement())
-    
-    /// Title of the post. Keep is short and click-worthy
-+   /// @mock faker.lorem.sentence
-    title   String
-  
-    /// Slug used in URI for the article. Allows modification of title post-publishing of article.
-    /// While the slug value can be changes, caution advised. Modifications *might* have negative SEO impacts.
-+   /// @mock mocker.slug
-    slug    String
-    
-    /// The meat of the article
-+   /// @mock faker.lorem.paragraphs
-    article String
-  
-    // relations (NOTE: double slashes are local comments and NOT parsed)
-    User    User?  @relation(fields: [userId], references: [id])
-    userId  Int?
-  }
+  /// The meat of the article
+  article String
+
+  // relations (NOTE: double slashes are local comments and NOT parsed)
+  User    User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+}
 ```
