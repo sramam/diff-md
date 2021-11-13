@@ -1,7 +1,9 @@
 # Annotations
 `noun-and-verb` is built on adding annotation hints to a prisma schema. These take the form
 
-```/// @annotation any,necessary,parameters```
+```diff
+
+/// @annotation any,necessary,parameters```
 
 These annotations can be applied to the Prisma models and/or individual fields. 
 
@@ -63,4 +65,4 @@ model Post {
   User    User?  @relation(fields: [userId], references: [id])
   userId  Int?
 }
-
+```
