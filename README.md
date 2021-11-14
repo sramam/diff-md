@@ -49,11 +49,11 @@
    article String
  
    // relations (NOTE: double slashes are local comments and NOT parsed)
--  User   User? @relation(fields: [userId], references: [id])
-+  User   User?   @relation(fields: [userId], references: [id])
+   User   User?   @relation(fields: [userId], references: [id])
    userId String?
  }
 \'\'\'
+
 ## API Annotations
 ```diff
  datasource db {
@@ -120,6 +120,7 @@
    userId String?
  }
 \'\'\'
+
 ## Mock data Annotations
 ```diff
  datasource db {
@@ -194,3 +195,4 @@
    userId String?
  }
 \'\'\'
+
