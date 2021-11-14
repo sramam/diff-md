@@ -52,7 +52,7 @@
    User   User?   @relation(fields: [userId], references: [id])
    userId String?
  }
-\'\'\'
+```
 
 ## API Annotations
 ```diff
@@ -119,7 +119,7 @@
    User   User?   @relation(fields: [userId], references: [id])
    userId String?
  }
-\'\'\'
+```
 
 ## Mock data Annotations
 ```diff
@@ -194,5 +194,5 @@
    User   User?   @relation(fields: [userId], references: [id])
    userId String?
  }
-\'\'\'
+```
 
