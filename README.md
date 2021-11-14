@@ -19,13 +19,44 @@ other three frameworks/tools we use to enable a functioning API server -
 
 Without further ado, the much hyped 6 `annotations`:
 
-1. `@createOnly`: Applies to model fields. Typically reserved for things like primary keys.
-2. `@readOnly`: Applies to model fields. Typically for fields populated on the server. 
-3. `@writeOnly`: Applies to model fields. Typically for 'secrets' the user provides for use by the server.
-4. `@scalar`: Applies to model fields. Converts to [graphQL scalars](https://graphql.org/learn/schema/#scalar-types). `noun-and-verb` adds support for dozens more (via [validate.js](https://validatejs.org/#validators)). For unknown scalars, a working scaffolding is generated.
-5. `@seed`: Applies to models and relation-fields. Specified as `@seed min,max,unique-field`. The `min` and `max` control the number of sub-relations created. For 1:1 relationships, `min = max = 1`. The seeder uses `upsert` to create rows in the table. This requires a `unique-field` to search for existence. If not provided, will use the first non-index string field, or the first non-index numeric field. When specified at the relation-field level, overrides the model specification.
-Only models with `@seed` annotations appear in the seeding script. All relationships are followed unless a loop or a `@seed 0,0` annotation is detected.
-6. `@mock`: Applies to model fields. Specifies the function used to generate a mock value. All functions from [`faker.js`](https://fakercloud.com/api) are made available by default. Many of the well-known `@scalar` from #4 are automatically mapped to appropriate 'faker' calls. For Strings/Ints/Floats/Booleans, appropriate faker calls are made. For `@scalar` fields without appropriate faker calls, a local `mocker` module is created with a mock function. The mock functions get two parameters - the global faker instance being used, so the "seeded" random-number can be used to maintain predictable behavior. And the parent model, with the fields mocked thus far. These are processed in the order of appearance in the model file, allowing for some modicum of dependency control. Note that mocker functions are generated one per file, and only generated if they don't already exist.
+1. `@createOnly`: 
+   - Applies to model fields
+   - Typically reserved for things like primary keys
+2. `@readOnly`: 
+   - Applies to model fields
+   - Typically for fields populated on the server
+3. `@writeOnly`:
+   - Applies to model fields
+   - Typically for 'secrets' the user provides for use by the server
+4. `@scalar`: 
+   - Applies to model fields
+   - Converts to [graphQL scalars](https://graphql.org/learn/schema/#scalar-types)
+   - `noun-and-verb` adds support for dozens more (via [validate.js](https://validatejs.org/#validators))
+   - For unknown scalars, a working scaffolding is generated
+5. `@seed`:
+   - Applies to models and relation-fields
+   - Specified as `@seed min,max,unique-field`
+   - The `min` and `max` control the number of sub-relations created. For 1:1 relationships, `min = max = 1`. Defaults to `0,10` at the field level, and `0,100` at the model level
+   - The seeder uses `upsert` to create rows in the table. This requires a `unique-field` to search for existence
+   - If `unique-field` is not provided, uses the first non-index string field, followed by the first non-index numeric field
+   - Specifications at the relation-field level override the model specification
+   - *Only models with `@seed` annotations appear in the seeding script*
+   - All relationships are followed unless a loop or a `@seed 0,0` annotation is detected
+6. `@mock`: 
+   - Applies to model fields. 
+   - Specifies the function used to generate a mock value. 
+   - All functions from [`faker.js`](https://fakercloud.com/api) are made available by default
+   - Many of the well-known `@scalar` from #4 are automatically mapped to appropriate 'faker' calls 
+   - For fields without `@mock` annotations, simple mocker functions are generated. For the base types (strings/ints/floats/booleans), sensible default functions are generated. For unknown/unmapped scalars, a "scaffolding" function is generated within a local "mocker" module. The developer is expected to fill in the details.
+   - Mock functions are generated in individual files, and only generated if not already existing.
+   - The mock functions get two parameters:
+     ```
+     // mocker/model_name/field_name.ts
+     export default function(faker: Faker, model: any): <string|boolean|number> {
+       // TODO: implement mock ability. 
+       // `model` provides access to all fields already mocked.
+     }
+     ```
 
 ## Noun-and-Verb Generator
 ```diff
