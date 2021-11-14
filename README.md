@@ -1,9 +1,6 @@
 # Annotations
 ## Noun-and-Verb Generator
 ```diff
---- schema-0.prisma	2021-11-13 15:52:10.000000000 -0800
-+++ schema-2-anno-gql.prisma	2021-11-13 16:07:12.000000000 -0800
-@@ -1,47 +1,63 @@
  datasource db {
    provider = "sqlite"
    url      = "file:./dev.db"
@@ -18,23 +15,16 @@
 +}
 +
  model User {
-+  /// @createOnly
-+  /// @readOnly
    id String @id @default(cuid())
  
-+  /// @createOnly
-+  /// @readOnly
    createdAt DateTime? @default(now())
  
-+  /// @readOnly
    modifiedAt DateTime? @default(now())
  
    /// Email address of the user
-+  /// @scalar Email
    email String
  
    /// password. Ideally, not readable via the API
-+  /// @writeOnly
    password String
  
    // relations (NOTE: double slashes are local comments and NOT parsed)
@@ -42,15 +32,10 @@
  }
  
  model Post {
-+  /// @createOnly
-+  /// @readOnly
    id String @id @default(cuid())
  
-+  /// @createOnly
-+  /// @readOnly
    createdAt DateTime? @default(now())
  
-+  /// @readOnly
    modifiedAt DateTime? @default(now())
  
    /// Title of the post. Keep is short and click-worthy
@@ -71,9 +56,6 @@
 \'\'\'
 ## API Annotations
 ```diff
---- schema-1-nv-generator.prisma	2021-11-13 16:06:40.000000000 -0800
-+++ schema-2-anno-gql.prisma	2021-11-13 16:07:12.000000000 -0800
-@@ -1,51 +1,63 @@
  datasource db {
    provider = "sqlite"
    url      = "file:./dev.db"
@@ -140,9 +122,6 @@
 \'\'\'
 ## Mock data Annotations
 ```diff
---- schema-2-anno-gql.prisma	2021-11-13 16:07:12.000000000 -0800
-+++ schema-3-anno-seeder.prisma	2021-11-13 16:00:22.000000000 -0800
-@@ -1,63 +1,71 @@
  datasource db {
    provider = "sqlite"
    url      = "file:./dev.db"
